@@ -1,0 +1,12 @@
+
+
+.my-container{
+  width: 90%;
+  margin: 0px auto;
+  max-width: 1000px;
+}
+
+
+h1{
+  font-family: 'Fjalla One', sans-serif;
+}

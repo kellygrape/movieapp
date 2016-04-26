@@ -6,7 +6,7 @@
   $('.search-button').click(function(){
 
     // remove any already-existing results from results-area
-    $('.results-area h3').remove();
+    $('.results-area .movie-result').remove();
 
 
     // if the search button was clicked, store the text from the search box
@@ -23,26 +23,33 @@
 }(jQuery));
 
 
-
-
 // Our search function
 function runSearch(userText){
   var encodedText;
   encodedText = encodeURIComponent(userText);
-
   $.getJSON("http://www.omdbapi.com/?s=" + encodedText + "&r=json", function (data) {
     $.each(data.Search, function(counter, movie) {
       console.log(movie);
       //document.write(movie.Title);
-      $('.results-area').append('<div class="movie-result">');
-      $('.results-area').append('<h3 class="movie-title">' + movie.Title + '('+movie.Year+')</h3>');
-      $('.results-area').append('<p>' + movie.Year + '</p>');
-      $('.results-area').append('<a href="http://www.imdb.com/title/'+ movie.imdbDB + '">IMDB</a>');
 
+      var theAppend = "";
+      // first, wrap the result in a div.  we can use this div to style each result
+      theAppend = theAppend + '<div class="movie-result row">';
+      // set the movie title to have an H3, and include the year the movie was released
+      // you can style the title by using .movie-result h3; you can style the year by using .movie-result .year
+      theAppend = theAppend + '<div class="movie-info col sm8">';
+      theAppend = theAppend + '  <h3> ' + movie.Title + ' <span class="year">(' + movie.Year + ')</span></h3>';
 
+      // now add the IMDB link
+      theAppend = theAppend + '  <p class=""><a href="http://www.imdb.com/title/'+ movie.imdbDB + '">Get more information on IMDB</a></p>';
+      theAppend = theAppend + '</div>';
+      // now add the image
+      theAppend = theAppend + '  <div class="image col sm4"><img src="'+ movie.Poster +'" class="movie-logo responsive-img"></div>';
+      // and close the .movie-result div
+      theAppend = theAppend + '</div>';
 
-
-      $('.results-area').append('</div>');
+      // now that we've built our output, we can append it!
+      $('.results-area').append(theAppend);
     });
   });
 }
